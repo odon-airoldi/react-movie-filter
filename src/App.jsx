@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
 
@@ -15,7 +15,23 @@ const films = [
 
 function App() {
 
-  const [selectGenre, setSelectGenre] = useState('select')
+  const [selectGenre, setSelectGenre] = useState('')
+  const [filteredFilms, setFilteredFilms] = useState(films)
+
+
+  useEffect(() => {
+
+    if (selectGenre != '') {
+      const filtered = films.filter(film => (
+        film.genre == selectGenre
+      ))
+      setFilteredFilms(filtered)
+    } else (
+      setFilteredFilms(films)
+    )
+
+
+  }, [selectGenre]);
 
 
 
@@ -23,25 +39,22 @@ function App() {
     <div className='container py-5'>
 
       <select className='form-select' onChange={(e) => setSelectGenre(e.target.value)}>
-        <option value="" >Select by genre</option>
-        {
-          films.map(film => (
-            <option value={film.genre}>{film.genre}</option>
-          ))
-        }
+        <option value="">Select by genre</option>
+        <option value="Fantascienza">Fantascienza</option>
+        <option value="Thriller">Thriller</option>
+        <option value="Romantico">Romantico</option>
+        <option value="Azione">Azione</option>
       </select>
 
       <ul>
         {
-          films
-            .filter(film => film.genre === selectGenre)
-            .map((film, index) => (
-              <li key={index}>{film.title}</li>
-            ))
+          filteredFilms.map((film, i) => (
+            <li key={i}>{film.title}</li>
+          ))
         }
       </ul>
 
-    </div>
+    </div >
   )
 }
 

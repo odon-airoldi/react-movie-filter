@@ -18,8 +18,13 @@ function App() {
   const [selectGenre, setSelectGenre] = useState('')
   const [filteredFilms, setFilteredFilms] = useState(films)
 
-  //input
+  //input search film by title
   const [searchFilm, setSearchFilm] = useState('')
+
+  //input add film
+  const [addedFilms, setAddedFilms] = useState([])
+  const [addedFilmTitle, setAddedFilmTitle] = useState('')
+
 
 
 
@@ -52,32 +57,69 @@ function App() {
   }, [searchFilm])
 
 
+
+  // added film
+  useEffect(() => {
+    console.log('ho aggiunto un film')
+  }, [addedFilms])
+
+
+  //form
+  function formAddFilm(e) {
+
+    e.preventDefault()
+
+    const newFilm = {
+      title: addedFilmTitle,
+      // genre: 'azione'
+    }
+
+    setAddedFilms([...addedFilms, newFilm])
+    setAddedFilmTitle('')
+
+  }
+
+  console.log(addedFilms)
+
   return (
     <div className="container py-5">
 
-      <div className="mb-5">
-        <div className="row">
-          <div className="col-6">
-            <input className="form-control" type="search" placeholder="Filter by title" onChange={(e) => setSearchFilm(e.target.value)} />
-          </div>
+      <div className="row gy-5">
+        <div className="col-6">
+          <select className="form-select" onChange={(e) => setSelectGenre(e.target.value)}>
+            <option value="">Filter by genre</option>
+            <option value="Fantascienza">Fantascienza</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Romantico">Romantico</option>
+            <option value="Azione">Azione</option>
+          </select>
         </div>
-      </div>
+        <div className="col-6">
+          <input className="form-control" type="search" placeholder="Filter by title" onChange={(e) => setSearchFilm(e.target.value)} />
+        </div>
+        <div className="col-12">
+          <ul>
+            {
+              filteredFilms.map((film, i) => (
+                <li key={i}>{film.title}</li>
+              ))
+            }
+          </ul>
+        </div>
+        <div className="col-12">
+          <h2 className="h6">Add film</h2>
+          <form onSubmit={formAddFilm}>
+            <div className="row">
+              <div className="col-6">
+                <input className="form-control" type="text" placeholder="Title" onChange={(e) => setAddedFilmTitle(e.target.value)} />
+                <button type="submit" className="btn btn-primary">Add</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div >
 
-      <select className="form-select" onChange={(e) => setSelectGenre(e.target.value)}>
-        <option value="">Filter by genre</option>
-        <option value="Fantascienza">Fantascienza</option>
-        <option value="Thriller">Thriller</option>
-        <option value="Romantico">Romantico</option>
-        <option value="Azione">Azione</option>
-      </select>
 
-      <ul>
-        {
-          filteredFilms.map((film, i) => (
-            <li key={i}>{film.title}</li>
-          ))
-        }
-      </ul>
 
     </div >
   )

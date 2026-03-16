@@ -15,10 +15,21 @@ const films = [
 
 function App() {
 
-  const [selectGenre, setSelectGenre] = useState('Fantascienza')
+  const [selectGenre, setSelectGenre] = useState('select')
+
+
 
   return (
     <div className='container py-5'>
+
+      <select className='form-select' onChange={(e) => setSelectGenre(e.target.value)}>
+        <option value="" >Select by genre</option>
+        {
+          films.map(film => (
+            <option value={film.genre}>{film.genre}</option>
+          ))
+        }
+      </select>
 
       <ul>
         {
